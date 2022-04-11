@@ -71,6 +71,10 @@ Extra large devices (large laptops and desktops, 1200px and up)
     background-color: darksalmon;
 }
 
+#clear, #backspace {
+    font-size: 30px;
+}
+
 .first-row, .second-row, .third-row, .fourth-row, .fifth-row {
     display: flex;
     justify-content: space-between;
