@@ -34,7 +34,7 @@ Extra large devices (large laptops and desktops, 1200px and up)
 .calculator {
     display: flex;
     flex-direction: column;
-    height: 650px;
+    height: 750px;
     width: 25%;
     border: 2px solid fuchsia;
 }
@@ -43,7 +43,7 @@ Extra large devices (large laptops and desktops, 1200px and up)
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100px;
+    height: 150px;
     border: 5px ridge yellowgreen;
     text-align: center;
     margin: 10px;
@@ -52,12 +52,14 @@ Extra large devices (large laptops and desktops, 1200px and up)
 .keypad {
     display: flex;
     flex-direction: column;
-    height: 550px;
+    height: 650px;
     border: 5px double blueviolet;
     margin: 10px;
 }
 
-.division {
+#division, #multiplication, #subtraction, #addition, #six, #seven, #eight,
+#nine, #two, #three, #four, #five, #zero, #one, #dot, #equals, #clear,
+#backspace {
     display: flex;
     height: 110px;
     border: 1px solid brown;
@@ -69,43 +71,7 @@ Extra large devices (large laptops and desktops, 1200px and up)
     background-color: darksalmon;
 }
 
-.multiplication {
-    display: flex;
-    height: 110px;
-    border: 1px solid brown;
-    flex: 1 0 0;
-    margin: 5px;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-    background-color: darksalmon;
-}
-
-.subtraction {
-    display: flex;
-    height: 110px;
-    border: 1px solid brown;
-    flex: 1 0 0;
-    margin: 5px;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-    background-color: darksalmon;
-}
-
-.addition {
-    display: flex;
-    height: 110px;
-    border: 1px solid brown;
-    flex: 1 0 0;
-    margin: 5px;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-    background-color: darksalmon;
-}
-
-.first-row {
+.first-row, .second-row, .third-row, .fourth-row, .fifth-row {
     display: flex;
     justify-content: space-between;
 }
