@@ -1,20 +1,32 @@
 /*
 Size Content to The Viewport
-Users are used to scroll websites vertically on both desktop and mobile devices - but not horizontally!
+Users are used to scroll websites vertically on both desktop and mobile devices 
+- but not horizontally!
 
-So, if the user is forced to scroll horizontally, or zoom out, to see the whole web page it results in a poor user experience.
+So, if the user is forced to scroll horizontally, or zoom out, to see the whole 
+web page it results in a poor user experience.
 
 Some additional rules to follow:
 
-1. Do NOT use large fixed width elements - For example, if an image is displayed at a width wider than the viewport it can cause the viewport to scroll horizontally. Remember to adjust this content to fit within the width of the viewport.
+1. Do NOT use large fixed width elements - For example, if an image is displayed
+at a width wider than the viewport it can cause the viewport to scroll 
+horizontally. Remember to adjust this content to fit within the width of the 
+viewport.
 
-2. Do NOT let the content rely on a particular viewport width to render well - Since screen dimensions and width in CSS pixels vary widely between devices, content should not rely on a particular viewport width to render well.
+2. Do NOT let the content rely on a particular viewport width to render well - 
+Since screen dimensions and width in CSS pixels vary widely between devices, 
+content should not rely on a particular viewport width to render well.
 
-3. Use CSS media queries to apply different styling for small and large screens - Setting large absolute CSS widths for page elements will cause the element to be too wide for the viewport on a smaller device. Instead, consider using relative width values, such as width: 100%. Also, be careful of using large absolute positioning values. It may cause the element to fall outside the viewport on small devices.
+3. Use CSS media queries to apply different styling for small and large screens 
+- Setting large absolute CSS widths for page elements will cause the element 
+to be too wide for the viewport on a smaller device. Instead, consider using 
+relative width values, such as width: 100%. Also, be careful of using large 
+absolute positioning values. It may cause the element to fall outside the 
+viewport on small devices.
 */
 
 
-/* 
+/*
 Extra small devices (phones, 600px and down)
 @media only screen and (max-width: 600px) {...}
 
@@ -31,11 +43,19 @@ Extra large devices (large laptops and desktops, 1200px and up)
 @media only screen and (min-width: 1200px) {...}
 */
 
+/*body {
+    box-sizing: border-box;
+}*/
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .calculator {
     display: flex;
     flex-direction: column;
-    height: 750px;
-    width: 25%;
     border: 2px solid fuchsia;
 }
 
@@ -43,36 +63,124 @@ Extra large devices (large laptops and desktops, 1200px and up)
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 150px;
     border: 5px ridge yellowgreen;
-    text-align: center;
-    margin: 10px;
 }
 
 .keypad {
     display: flex;
     flex-direction: column;
-    height: 650px;
     border: 5px double blueviolet;
-    margin: 10px;
 }
 
 #division, #multiplication, #subtraction, #addition, #six, #seven, #eight,
 #nine, #two, #three, #four, #five, #zero, #one, #dot, #equals, #clear,
 #backspace {
     display: flex;
-    height: 110px;
     border: 1px solid brown;
     flex: 1 0 0;
-    margin: 5px;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
     background-color: darksalmon;
 }
 
-#clear, #backspace {
-    font-size: 30px;
+@media only screen and (max-width: 320px) {
+    .calculator {
+        width: 90%;
+        height: 400px;
+    }
+
+    .screen {
+        height: 60px;
+        margin: 3px;
+    }
+
+    .keypad {
+        height: 340px;
+        margin: 3px;
+    }
+
+    #division, #multiplication, #subtraction, #addition, #six, #seven, #eight,
+    #nine, #two, #three, #four, #five, #zero, #one, #dot, #equals, #clear, 
+    #backspace {
+        height: 60px;
+        margin: 2px;
+        font-size: 20px;
+    }
+}
+
+@media only screen and (min-width: 321px) and (max-width: 375px) {
+    .calculator {
+        width: 90%;
+        height: 450px;
+    }
+
+    .screen {
+        height: 65px;
+        margin: 3px;
+    }
+
+    .keypad {
+        height: 390px;
+        margin: 3px;
+    }
+
+    #division, #multiplication, #subtraction, #addition, #six, #seven, #eight,
+    #nine, #two, #three, #four, #five, #zero, #one, #dot, #equals, #clear, 
+    #backspace {
+        height: 70px;
+        margin: 2px;
+        font-size: 23px;
+    }
+}
+
+@media only screen and (min-width: 376px) and (max-width: 425px) {
+    .calculator {
+        width: 90%;
+        height: 500px;
+    }
+
+    .screen {
+        height: 70px;
+        margin: 3px;
+    }
+
+    .keypad {
+        height: 440px;
+        margin: 3px;
+    }
+
+    #division, #multiplication, #subtraction, #addition, #six, #seven, #eight,
+    #nine, #two, #three, #four, #five, #zero, #one, #dot, #equals, #clear, 
+    #backspace {
+        height: 80px;
+        margin: 2px;
+        font-size: 25px;
+    }
+}
+
+@media only screen and (min-width: 426px) and (max-width: 768px) {
+    .calculator {
+        width: 60%;
+        height: 550px;
+    }
+
+    .screen {
+        height: 75px;
+        margin: 3px;
+    }
+
+    .keypad {
+        height: 475px;
+        margin: 3px;
+    }
+
+    #division, #multiplication, #subtraction, #addition, #six, #seven, #eight,
+    #nine, #two, #three, #four, #five, #zero, #one, #dot, #equals, #clear, 
+    #backspace {
+        height: 90px;
+        margin: 2px;
+        font-size: 25px;
+    }
 }
 
 .first-row, .second-row, .third-row, .fourth-row, .fifth-row {
