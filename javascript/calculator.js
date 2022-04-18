@@ -1,3 +1,4 @@
+// definition of the objects for all of the buttons of the calculator
 const division = document.getElementById("division");
 const multiplication = document.getElementById("multiplication");
 const subtraction = document.getElementById("subtraction");
@@ -16,5 +17,3 @@ const dot = document.getElementById("dot");
 const equals = document.getElementById("equals");
 const clear = document.getElementById("clear");
 const backspace = document.getElementById("backspace");
-
-
