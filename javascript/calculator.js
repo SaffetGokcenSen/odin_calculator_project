@@ -36,7 +36,14 @@ const display = document.querySelector(".screen");
 //let expression = ['12', '+', '56', '*', '62', '/', '31', '-', '2'];
 //let expression = ['12', '+', '56', '*', '62', '-', '31', '/', '2'];
 //let expression = ['12', '+', '56', '-', '62', '/', '31', '*', '2'];
-let expression = ['12', '+', '56', '-', '62', '*', '14', '/', '2'];
+//let expression = ['12', '+', '56', '-', '62', '*', '14', '/', '2'];
+//let expression = ['12', '*', '4', '+', '62', '/', '31', '-', '6'];
+//let expression = ['12', '*', '4', '+', '62', '-', '24', '/', '6'];
+//let expression = ['12', '*', '48', '/', '6', '+', '24', '-', '6'];
+//let expression = ['12', '*', '48', '/', '6', '-', '24', '+', '6'];
+//let expression = ['12', '*', '48', '-', '6', '+', '24', '/', '6'];
+//let expression = ['12', '*', '48', '-', '72', '/', '24', '+', '6'];
+let expression = ['144', '/', '48', '-', '72', '+', '24', '*', '6'];
 
 let div = [], cross = [], plus = [], minus = [];
 expression.forEach((element, index) => {
@@ -74,7 +81,7 @@ concatenationArray.sort(function(a, b) {
     return a - b;
 });
 
-// let a function be defined for the steps 11.1 to 11.1.6.
+
 let reduceExpression = function(...opIndexArrays) {
     // the first element of the opIndexArrays is the index array of the 
     // highest-precedence operation. The rest of the arrays are the index arrays 
@@ -84,133 +91,88 @@ let reduceExpression = function(...opIndexArrays) {
     let result, operator;
     let expressionLength;
     while (opIndexArrays.length) {
-        //console.log("The operation indices are as follows:");
-        //console.log(opIndexArrays[0]);
         console.log(expression);
-    while (opIndexArrays[0].length) {
-        // opIndex is the index of the operation in the expression array
-        opIndex = (opIndexArrays[0])[0];
-        ////////////////////////////////////////////////////////////////////////
-        // KEEP THIS PART IN MIND. IT CAN CAUSE PROBLEMS IN THE FUTURE!
-        opIndexArrays[0].splice(0, 1);
-        ////////////////////////////////////////////////////////////////////////
-        operator = expression[opIndex];
-        // locate the opIndex in the concatenation array
-        concatIndex = concatenationArray.findIndex((element) => 
-        element === opIndex);
-
-        concatArrLength = concatenationArray.length;
-        expressionLength = expression.length;
-        if (concatIndex === 0) {
-            firstOperand = expression.slice(0, opIndex);
-            // console.log("First operand is " + firstOperand);
-            if (concatArrLength === 1) {
-                // console.log("Expression is as follows:");
-                // console.log(expression);
-                secondOperand = expression.slice((opIndex+1), expressionLength);
-                // console.log("Second operand is " + secondOperand);
-                // console.log("Operator is " + operator);
-                result = getResult(operator, firstOperand, secondOperand);
-                // console.log("Result is " + result);
-                expression.splice(0, expressionLength, result);
-                concatenationArray.splice(concatIndex, 1);
-            }
-            else {
-                // console.log("Expression is as follows:");
-                // console.log(expression);
-                nextOpIndex = concatenationArray[1];
-                secondOperand = expression.slice((opIndex+1), nextOpIndex);
-                // console.log("Second operand is " + secondOperand);
-                // console.log("Operator is " + operator);
-                result = getResult(operator, firstOperand, secondOperand);
-                // console.log("Result is " + result);
-                expression.splice(0, nextOpIndex, result);
-                concatenationArray.splice(concatIndex, 1);
-                opIndexArrays.forEach((element) => {
-                    element.forEach((element, index, array) => {
+        while (opIndexArrays[0].length) {
+            // opIndex is the index of the operation in the expression array
+            opIndex = (opIndexArrays[0])[0];
+            opIndexArrays[0].splice(0, 1);
+            operator = expression[opIndex];
+            // locate the opIndex in the concatenation array
+            concatIndex = concatenationArray.findIndex((element) => 
+            element === opIndex);
+            concatArrLength = concatenationArray.length;
+            expressionLength = expression.length;
+            if (concatIndex === 0) {
+                firstOperand = expression.slice(0, opIndex);
+                if (concatArrLength === 1) {
+                    secondOperand = expression.slice((opIndex+1), expressionLength);
+                    result = getResult(operator, firstOperand, secondOperand);
+                    expression.splice(0, expressionLength, result);
+                    concatenationArray.splice(concatIndex, 1);
+                }
+                else {
+                    nextOpIndex = concatenationArray[1];
+                    secondOperand = expression.slice((opIndex+1), nextOpIndex);
+                    result = getResult(operator, firstOperand, secondOperand);
+                    expression.splice(0, nextOpIndex, result);
+                    concatenationArray.splice(concatIndex, 1);
+                    opIndexArrays.forEach((element) => {
+                        element.forEach((element, index, array) => {
+                            array[index] = element - 2;
+                        })
+                    });
+                    concatenationArray.forEach((element, index, array) => {
                         array[index] = element - 2;
-                    })
-                });
-                concatenationArray.forEach((element, index, array) => {
-                    array[index] = element - 2;
-                });
+                    });
+                    concatenationArray.sort(function(a, b) {
+                        return a - b;
+                    });
+                }
+            }
+            else if (concatIndex === (concatArrLength - 1)) {
+                previousOpIndex = concatenationArray[concatIndex - 1];
+                firstOperand = expression.slice(previousOpIndex + 1, opIndex);
+                secondOperand = expression.slice(opIndex + 1, expressionLength);
+                result = getResult(operator, firstOperand, secondOperand);
+                expression.splice((previousOpIndex+1), 
+                (expressionLength-(previousOpIndex+1)), result);
+                concatenationArray.splice(concatIndex, 1);
                 concatenationArray.sort(function(a, b) {
                     return a - b;
                 });
             }
-        }
-        else if (concatIndex === (concatArrLength - 1)) {
-            previousOpIndex = concatenationArray[concatIndex - 1];
-            // console.log("Previous operator index is " + previousOpIndex);
-            // first_operand = expression[(previous_operator_index+1):div_index]
-            firstOperand = expression.slice(previousOpIndex + 1, opIndex);
-            // console.log("First operand is " + firstOperand);
-            // second_operand = expression[(div_index+1):expression_length]
-            secondOperand = expression.slice(opIndex + 1, expressionLength);
-            // console.log("Second operand is " + secondOperand);
-            // result = (+first_operand) / (+second_operand)
-            result = getResult(operator, firstOperand, secondOperand);
-            // console.log("Result is " + result);
-            // expression.splice((previous_operator_index+1),(expression_length-(previous_operator_index+1)), result)
-            expression.splice((previousOpIndex+1), 
-            (expressionLength-(previousOpIndex+1)), result);
-            // console.log(expression);
-            // remove this index from the concatenation array
-            concatenationArray.splice(concatIndex, 1);
-            concatenationArray.sort(function(a, b) {
-                return a - b;
-            });
-            // console.log(concatenationArray);
-        }
-        else {
-            //console.log("The expression is as follows:");
-            //console.log(expression);
-            previousOpIndex = concatenationArray[concatIndex - 1];
-            //console.log("Previous operator index is " + previousOpIndex);
-            firstOperand = expression.slice(previousOpIndex + 1, opIndex);
-            // console.log("First operand is " + firstOperand);
-            nextOpIndex = concatenationArray[concatIndex + 1];
-            //console.log("Next operator index is " + nextOpIndex);
-            secondOperand = expression.slice((opIndex + 1), nextOpIndex);
-            // console.log("Second operand is " + secondOperand);
-            result = getResult(operator, firstOperand, secondOperand);
-            // console.log("Result is " + result);
-            // expression.splice((previous_operator_index+1),(next_operator_index-previous_operator_index-1), result)
-            expression.splice((previousOpIndex + 1), 
-            (nextOpIndex - (previousOpIndex + 1)), result);
-            // console.log(expression);
-            concatenationArray.splice(concatIndex, 1);
-            // console.log(concatenationArray);
-            opIndexArrays.forEach((element) => {
-                element.forEach((element, index, array) => {
+            else {
+                previousOpIndex = concatenationArray[concatIndex - 1];
+                firstOperand = expression.slice(previousOpIndex + 1, opIndex);
+                nextOpIndex = concatenationArray[concatIndex + 1];
+                secondOperand = expression.slice((opIndex + 1), nextOpIndex);
+                result = getResult(operator, firstOperand, secondOperand);
+                expression.splice((previousOpIndex + 1), 
+                (nextOpIndex - (previousOpIndex + 1)), result);
+                concatenationArray.splice(concatIndex, 1);
+                opIndexArrays.forEach((element) => {
+                    element.forEach((element, index, array) => {
+                        if (element >= nextOpIndex) {
+                            array[index] = element - 2;
+                        }
+                    })
+                });
+                concatenationArray.forEach((element, index, array) => {
                     if (element >= nextOpIndex) {
                         array[index] = element - 2;
                     }
-                })
-            });
-            concatenationArray.forEach((element, index, array) => {
-                if (element >= nextOpIndex) {
-                    array[index] = element - 2;
-                }
-            });
-            concatenationArray.sort(function(a, b) {
-                return a - b;
-            });
-            //console.log("Operator index arrays are as follows:");
-            //opIndexArrays.forEach((element) => {
-            //    console.log(element);
-            //})
-            //console.log("Concatenation array is as follows:");
-            //console.log(concatenationArray);
-            //console.log("The expression is as follows:");
-            //console.log(expression);
+                });
+                concatenationArray.sort(function(a, b) {
+                    return a - b;
+                });
+                console.log(expression);
+            }
         }
+        opIndexArrays.splice(0, 1);
     }
-    opIndexArrays.splice(0, 1);
-}
     return expression[0];
 }
 
-let calc_result = reduceExpression(div, cross, plus, minus);
+let calc_result = reduceExpression(div, cross, minus, plus);
 
 console.log("The result of the calculation is " + calc_result);
