@@ -20,32 +20,14 @@ const backspace = document.querySelector("#backspace");
 // definition of the object for the screen of the calculator
 const display = document.querySelector(".screen");
 
-//let expression = ['250', '/', '5'];
-//let expression = ['250', '/', '5', '/', '2', '/', '5', '/', '2'];
-//let expression = ['250', '/', '5', '*', '2'];
-//let expression = ['250', '/', '5', '*', '2', '*', '3'];
-//let expression = ['4', '*', '250', '/', '5'];
-//let expression = ['3', '*', '4', '*', '250', '/', '5'];
-//let expression = ['250', '/', '5', '+', '2'];
-//let expression = ['250', '/', '5', '+', '2', '+', '10'];
-//let expression = ['10', '+', '250', '/', '5'];
-//let expression = ['20', '+', '10', '+', '250', '/', '5'];
-//let expression = ['160', '/', '4', '-', '13', '-', '12'];
-//let expression = ['12', '+', '56', '/', '4', '-', '31', '*', '2'];
-//let expression = ['12', '+', '56', '/', '4', '*', '31', '-', '2'];
-//let expression = ['12', '+', '56', '*', '62', '/', '31', '-', '2'];
-//let expression = ['12', '+', '56', '*', '62', '-', '31', '/', '2'];
-//let expression = ['12', '+', '56', '-', '62', '/', '31', '*', '2'];
-//let expression = ['12', '+', '56', '-', '62', '*', '14', '/', '2'];
-//let expression = ['12', '*', '4', '+', '62', '/', '31', '-', '6'];
-//let expression = ['12', '*', '4', '+', '62', '-', '24', '/', '6'];
-//let expression = ['12', '*', '48', '/', '6', '+', '24', '-', '6'];
-//let expression = ['12', '*', '48', '/', '6', '-', '24', '+', '6'];
-//let expression = ['12', '*', '48', '-', '6', '+', '24', '/', '6'];
-//let expression = ['12', '*', '48', '-', '72', '/', '24', '+', '6'];
-let expression = ['144', '/', '48', '-', '72', '+', '24', '*', '6'];
+// it is assumed that this is the character array form of the expression input 
+// by the user
+let expression = ['144', '-', '42', '/', '7', '*', '24', '+', '6'];
 
+// operator index arrays initialized to empty arrays 
 let div = [], cross = [], plus = [], minus = [];
+
+// the array indices of each operator are extracted from the expression array
 expression.forEach((element, index) => {
     if (element === '/') {
         div.push(index);
@@ -61,6 +43,7 @@ expression.forEach((element, index) => {
     }
 })
 
+// division, multiplication, summation and subtraction operations are defined
 let getResult = function(operator, firstOperand, secondOperand) {
     if (operator === '/') {
         return (+firstOperand) / (+secondOperand);
@@ -76,26 +59,30 @@ let getResult = function(operator, firstOperand, secondOperand) {
     }
 }
 
+// operator indices are collected in a single array
 let concatenationArray = div.concat(cross, plus, minus);
+// operator indices are sorted in an ascending order
 concatenationArray.sort(function(a, b) {
     return a - b;
 });
 
-
+// this function is designed to evaluate the expression entered by the user 
+// according to the precedence rules
 let reduceExpression = function(...opIndexArrays) {
-    // the first element of the opIndexArrays is the index array of the 
-    // highest-precedence operation. The rest of the arrays are the index arrays 
-    // of lower-precedence operations.
     let opIndex, concatIndex, concatArrLength, firstOperand, secondOperand;
     let previousOpIndex, nextOpIndex;
     let result, operator;
     let expressionLength;
+    // take all of the operations into consideration
     while (opIndexArrays.length) {
         console.log(expression);
+        // take all incidences of the current operation into consideration
         while (opIndexArrays[0].length) {
             // opIndex is the index of the operation in the expression array
             opIndex = (opIndexArrays[0])[0];
+            // drop this incidence of the operation from the operation array
             opIndexArrays[0].splice(0, 1);
+            // identify the operator
             operator = expression[opIndex];
             // locate the opIndex in the concatenation array
             concatIndex = concatenationArray.findIndex((element) => 
