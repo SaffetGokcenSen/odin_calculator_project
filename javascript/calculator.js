@@ -67,7 +67,10 @@ concatenationArray.sort(function(a, b) {
 });
 
 // this function is designed to evaluate the expression entered by the user 
-// according to the precedence rules
+// according to the precedence rules. the arguments are ordered according to the
+// precedence the operations are to be performed.
+// reduceExpression(div, cross, minus, plus) evaluates an expression according
+// to the correct precedence.
 let reduceExpression = function(...opIndexArrays) {
     let opIndex, concatIndex, concatArrLength, firstOperand, secondOperand;
     let previousOpIndex, nextOpIndex;
@@ -89,25 +92,35 @@ let reduceExpression = function(...opIndexArrays) {
             element === opIndex);
             concatArrLength = concatenationArray.length;
             expressionLength = expression.length;
+            // the case when the operation is the first in the expression
             if (concatIndex === 0) {
                 firstOperand = expression.slice(0, opIndex);
+                // the case when there is only one operation
                 if (concatArrLength === 1) {
                     secondOperand = expression.slice((opIndex+1), expressionLength);
                     result = getResult(operator, firstOperand, secondOperand);
+                    // remove the operation and its operands from the expression
                     expression.splice(0, expressionLength, result);
+                    // remove the operation from the operaitons array
                     concatenationArray.splice(concatIndex, 1);
                 }
+                // the case when there are more than one operations
                 else {
+                    // the index of the next operator
                     nextOpIndex = concatenationArray[1];
                     secondOperand = expression.slice((opIndex+1), nextOpIndex);
                     result = getResult(operator, firstOperand, secondOperand);
                     expression.splice(0, nextOpIndex, result);
                     concatenationArray.splice(concatIndex, 1);
+                    // the indices of the operators are updated due to the
+                    // removal of the current operator
                     opIndexArrays.forEach((element) => {
                         element.forEach((element, index, array) => {
                             array[index] = element - 2;
                         })
                     });
+                    // update of the indices due to the removal of the current
+                    // operator
                     concatenationArray.forEach((element, index, array) => {
                         array[index] = element - 2;
                     });
@@ -116,7 +129,9 @@ let reduceExpression = function(...opIndexArrays) {
                     });
                 }
             }
+            // the case when the operation is the last in the expression
             else if (concatIndex === (concatArrLength - 1)) {
+                // the index of the previous operator
                 previousOpIndex = concatenationArray[concatIndex - 1];
                 firstOperand = expression.slice(previousOpIndex + 1, opIndex);
                 secondOperand = expression.slice(opIndex + 1, expressionLength);
@@ -128,6 +143,8 @@ let reduceExpression = function(...opIndexArrays) {
                     return a - b;
                 });
             }
+            // the case when the operation is neither the first nor the last in
+            // the expression
             else {
                 previousOpIndex = concatenationArray[concatIndex - 1];
                 firstOperand = expression.slice(previousOpIndex + 1, opIndex);
@@ -155,8 +172,11 @@ let reduceExpression = function(...opIndexArrays) {
                 console.log(expression);
             }
         }
+        // all of the incidences of the first operation have been taken into
+        // consideration
         opIndexArrays.splice(0, 1);
     }
+    // expression has only one element which is its result
     return expression[0];
 }
 
