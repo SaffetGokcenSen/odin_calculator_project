@@ -20,29 +20,6 @@ const backspace = document.querySelector("#backspace");
 // definition of the object for the screen of the calculator
 const display = document.querySelector(".screen");
 
-// it is assumed that this is the character array form of the expression input 
-// by the user
-let expression = ['144', '-', '42', '/', '7', '*', '24', '+', '6'];
-
-// operator index arrays initialized to empty arrays 
-let div = [], cross = [], plus = [], minus = [];
-
-// the array indices of each operator are extracted from the expression array
-expression.forEach((element, index) => {
-    if (element === '/') {
-        div.push(index);
-    }
-    else if (element === '*') {
-        cross.push(index);
-    }
-    else if (element === '+') {
-        plus.push(index);
-    }
-    else if (element === '-') {
-        minus.push(index);
-    }
-})
-
 // division, multiplication, summation and subtraction operations are defined
 let getResult = function(operator, firstOperand, secondOperand) {
     if (operator === '/') {
@@ -58,13 +35,6 @@ let getResult = function(operator, firstOperand, secondOperand) {
         return (+firstOperand) - (+secondOperand);
     }
 }
-
-// operator indices are collected in a single array
-let concatenationArray = div.concat(cross, plus, minus);
-// operator indices are sorted in an ascending order
-concatenationArray.sort(function(a, b) {
-    return a - b;
-});
 
 // this function is designed to evaluate the expression entered by the user 
 // according to the precedence rules. the arguments are ordered according to the
@@ -179,6 +149,36 @@ let reduceExpression = function(...opIndexArrays) {
     // expression has only one element which is its result
     return expression[0];
 }
+
+// it is assumed that this is the character array form of the expression input 
+// by the user
+let expression = ['144', '/', '3', '+', '7', '*', '4', '-', '6'];
+
+// operator index arrays initialized to empty arrays 
+let div = [], cross = [], plus = [], minus = [];
+
+// the array indices of each operator are extracted from the expression array
+expression.forEach((element, index) => {
+    if (element === '/') {
+        div.push(index);
+    }
+    else if (element === '*') {
+        cross.push(index);
+    }
+    else if (element === '+') {
+        plus.push(index);
+    }
+    else if (element === '-') {
+        minus.push(index);
+    }
+})
+
+// operator indices are collected in a single array
+let concatenationArray = div.concat(cross, plus, minus);
+// operator indices are sorted in an ascending order
+concatenationArray.sort(function(a, b) {
+    return a - b;
+});
 
 let calc_result = reduceExpression(div, cross, minus, plus);
 
