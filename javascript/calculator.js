@@ -150,12 +150,150 @@ let reduceExpression = function(...opIndexArrays) {
     return expression[0];
 }
 
+let operatorExpected = false;
+let digitExpected = true;
+let equalClicked = false;
+
+expressionString = "";
+
+function divClicked() {
+    if (operatorExpected) {
+        expressionString += "/";
+        digitExpected = true;
+        operatorExpected = false;
+        display.textContent = expressionString;
+    }
+}
+division.addEventListener("click", divClicked);
+
+function crossClicked() {
+    if (operatorExpected) {
+        expressionString += "*";
+        digitExpected = true;
+        operatorExpected = false;
+        display.textContent = expressionString;
+    }
+}
+multiplication.addEventListener("click", crossClicked);
+
+function minusClicked() {
+    if (operatorExpected) {
+        expressionString += "-";
+        digitExpected = true;
+        operatorExpected = false;
+        display.textContent = expressionString;
+    }
+}
+subtraction.addEventListener("click", minusClicked);
+
+function plusClicked() {
+    if (operatorExpected) {
+        expressionString += "+";
+        digitExpected = true;
+        operatorExpected = false;
+        display.textContent = expressionString;
+    }
+}
+addition.addEventListener("click", plusClicked);
+
+function sixClicked() {
+    if (digitExpected) {
+        expressionString += "6";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+six.addEventListener("click", sixClicked);
+
+function sevenClicked() {
+    if (digitExpected) {
+        expressionString += "7";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+seven.addEventListener("click", sevenClicked);
+
+function eightClicked() {
+    if (digitExpected) {
+        expressionString += "8";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+eight.addEventListener("click", eightClicked);
+
+function nineClicked() {
+    if (digitExpected) {
+        expressionString += "9";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+nine.addEventListener("click", nineClicked);
+
+function twoClicked() {
+    if (digitExpected) {
+        expressionString += "2";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+two.addEventListener("click", twoClicked);
+
+function threeClicked() {
+    if (digitExpected) {
+        expressionString += "3";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+three.addEventListener("click", threeClicked);
+
+function fourClicked() {
+    if (digitExpected) {
+        expressionString += "4";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+four.addEventListener("click", fourClicked);
+
+function fiveClicked() {
+    if (digitExpected) {
+        expressionString += "5";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+five.addEventListener("click", fiveClicked);
+
+function zeroClicked() {
+    if (digitExpected) {
+        expressionString += "0";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+zero.addEventListener("click", zeroClicked);
+
+function oneClicked() {
+    if (digitExpected) {
+        expressionString += "1";
+        display.textContent = expressionString;
+        operatorExpected = true;
+    }
+}
+one.addEventListener("click", oneClicked);
+
 // it is assumed that this is the character array form of the expression input 
 // by the user
-let expression = ['144', '/', '3', '+', '7', '*', '4', '-', '6'];
+// let expression = ['144', '/', '3', '+', '7', '*', '4', '-', '6'];
 
 // operator index arrays initialized to empty arrays 
 let div = [], cross = [], plus = [], minus = [];
+
+expression = [];
 
 // the array indices of each operator are extracted from the expression array
 expression.forEach((element, index) => {
@@ -180,6 +318,6 @@ concatenationArray.sort(function(a, b) {
     return a - b;
 });
 
-let calc_result = reduceExpression(div, cross, minus, plus);
-
-console.log("The result of the calculation is " + calc_result);
+if ( equalClicked) {
+    let calc_result = reduceExpression(div, cross, minus, plus);
+}
