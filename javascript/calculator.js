@@ -155,112 +155,43 @@ let equalClicked = false;
 expressionString = "";
 
 function dropOpEventListener() {
-    division.removeEventListener("click", divClicked);
-    multiplication.removeEventListener("click", crossClicked);
-    subtraction.removeEventListener("click", minusClicked);
-    addition.removeEventListener("click", plusClicked);
+    division.removeEventListener("click", opButtonClicked);
+    multiplication.removeEventListener("click", opButtonClicked);
+    subtraction.removeEventListener("click", opButtonClicked);
+    addition.removeEventListener("click", opButtonClicked);
 }
 
 function addOpEventListener() {
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    division.addEventListener("click", opButtonClicked);
+    multiplication.addEventListener("click", opButtonClicked);
+    subtraction.addEventListener("click", opButtonClicked);
+    addition.addEventListener("click", opButtonClicked);
 }
 
-function divClicked() {
-    expressionString += "/";
+function opButtonClicked() {
+    let buttonText = this.textContent;
+    expressionString += buttonText;
     display.textContent = expressionString;
     dropOpEventListener();
 }
 
-function crossClicked() {
-    expressionString += "*";
-    display.textContent = expressionString;
-    dropOpEventListener();
-}
-
-function minusClicked() {
-    expressionString += "-";
-    display.textContent = expressionString;
-    dropOpEventListener();
-}
-
-function plusClicked() {
-    expressionString += "+";
-    display.textContent = expressionString;
-    dropOpEventListener();
-}
-
-function sixClicked() {
-    expressionString += "6";
+function digitButtonClicked() {
+    let buttonText = this.textContent;
+    expressionString += buttonText;
     display.textContent = expressionString;
     addOpEventListener();
 }
-six.addEventListener("click", sixClicked);
 
-function sevenClicked() {
-    expressionString += "7";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-seven.addEventListener("click", sevenClicked);
-
-function eightClicked() {
-    expressionString += "8";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-eight.addEventListener("click", eightClicked);
-
-function nineClicked() {
-    expressionString += "9";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-nine.addEventListener("click", nineClicked);
-
-function twoClicked() {
-    expressionString += "2";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-two.addEventListener("click", twoClicked);
-
-function threeClicked() {
-    expressionString += "3";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-three.addEventListener("click", threeClicked);
-
-function fourClicked() {
-    expressionString += "4";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-four.addEventListener("click", fourClicked);
-
-function fiveClicked() {
-    expressionString += "5";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-five.addEventListener("click", fiveClicked);
-
-function zeroClicked() {
-    expressionString += "0";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-zero.addEventListener("click", zeroClicked);
-
-function oneClicked() {
-    expressionString += "1";
-    display.textContent = expressionString;
-    addOpEventListener();
-}
-one.addEventListener("click", oneClicked);
+six.addEventListener("click", digitButtonClicked);
+seven.addEventListener("click", digitButtonClicked);
+eight.addEventListener("click", digitButtonClicked);
+nine.addEventListener("click", digitButtonClicked);
+two.addEventListener("click", digitButtonClicked);
+three.addEventListener("click", digitButtonClicked);
+four.addEventListener("click", digitButtonClicked);
+five.addEventListener("click", digitButtonClicked);
+zero.addEventListener("click", digitButtonClicked);
+one.addEventListener("click", digitButtonClicked);
 
 // it is assumed that this is the character array form of the expression input 
 // by the user
