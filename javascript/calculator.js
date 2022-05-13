@@ -154,139 +154,111 @@ let equalClicked = false;
 
 expressionString = "";
 
-function divClicked() {
-    expressionString += "/";
-    display.textContent = expressionString;
+function dropOpEventListener() {
     division.removeEventListener("click", divClicked);
     multiplication.removeEventListener("click", crossClicked);
     subtraction.removeEventListener("click", minusClicked);
     addition.removeEventListener("click", plusClicked);
+}
+
+function addOpEventListener() {
+    division.addEventListener("click", divClicked);
+    multiplication.addEventListener("click", crossClicked);
+    subtraction.addEventListener("click", minusClicked);
+    addition.addEventListener("click", plusClicked);
+}
+
+function divClicked() {
+    expressionString += "/";
+    display.textContent = expressionString;
+    dropOpEventListener();
 }
 
 function crossClicked() {
     expressionString += "*";
     display.textContent = expressionString;
-    division.removeEventListener("click", divClicked);
-    multiplication.removeEventListener("click", crossClicked);
-    subtraction.removeEventListener("click", minusClicked);
-    addition.removeEventListener("click", plusClicked);
+    dropOpEventListener();
 }
 
 function minusClicked() {
     expressionString += "-";
     display.textContent = expressionString;
-    division.removeEventListener("click", divClicked);
-    multiplication.removeEventListener("click", crossClicked);
-    subtraction.removeEventListener("click", minusClicked);
-    addition.removeEventListener("click", plusClicked);
+    dropOpEventListener();
 }
 
 function plusClicked() {
     expressionString += "+";
     display.textContent = expressionString;
-    division.removeEventListener("click", divClicked);
-    multiplication.removeEventListener("click", crossClicked);
-    subtraction.removeEventListener("click", minusClicked);
-    addition.removeEventListener("click", plusClicked);
+    dropOpEventListener();
 }
 
 function sixClicked() {
     expressionString += "6";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 six.addEventListener("click", sixClicked);
 
 function sevenClicked() {
     expressionString += "7";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 seven.addEventListener("click", sevenClicked);
 
 function eightClicked() {
     expressionString += "8";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 eight.addEventListener("click", eightClicked);
 
 function nineClicked() {
     expressionString += "9";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 nine.addEventListener("click", nineClicked);
 
 function twoClicked() {
     expressionString += "2";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 two.addEventListener("click", twoClicked);
 
 function threeClicked() {
     expressionString += "3";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 three.addEventListener("click", threeClicked);
 
 function fourClicked() {
     expressionString += "4";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 four.addEventListener("click", fourClicked);
 
 function fiveClicked() {
     expressionString += "5";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 five.addEventListener("click", fiveClicked);
 
 function zeroClicked() {
     expressionString += "0";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 zero.addEventListener("click", zeroClicked);
 
 function oneClicked() {
     expressionString += "1";
     display.textContent = expressionString;
-    division.addEventListener("click", divClicked);
-    multiplication.addEventListener("click", crossClicked);
-    subtraction.addEventListener("click", minusClicked);
-    addition.addEventListener("click", plusClicked);
+    addOpEventListener();
 }
 one.addEventListener("click", oneClicked);
 
