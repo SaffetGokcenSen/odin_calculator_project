@@ -153,6 +153,7 @@ let reduceExpression = function(...opIndexArrays) {
 let equalClicked = false;
 let zeroClicked = false;
 let nonZeroDigitClicked = false;
+let dotClicked = false;
 
 function dropOpEventListener() {
     division.removeEventListener("click", opButtonClicked);
@@ -201,6 +202,15 @@ function opButtonClicked() {
     zeroClicked = false;
     dropOpEventListener();
     addDigitEventListener();
+    dotClicked = false;
+}
+
+function dotButtonClicked() {
+    display.textContent += ".";
+    dotClicked = true;
+    dot.removeEventListener("click", dotButtonClicked);
+    dropOpEventListener();
+    if (!nonZeroDigitClicked) addDigitEventListener();
 }
 
 function digitButtonClicked() {
@@ -216,6 +226,7 @@ function digitButtonClicked() {
         }
     }
     addOpEventListener();
+    if (!dotClicked) dot.addEventListener("click", dotButtonClicked);
 }
 
 addDigitEventListener();
