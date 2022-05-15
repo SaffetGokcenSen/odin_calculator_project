@@ -152,8 +152,6 @@ let reduceExpression = function(...opIndexArrays) {
 
 let equalClicked = false;
 
-expressionString = "";
-
 function dropOpEventListener() {
     division.removeEventListener("click", opButtonClicked);
     multiplication.removeEventListener("click", opButtonClicked);
@@ -170,15 +168,13 @@ function addOpEventListener() {
 
 function opButtonClicked() {
     let buttonText = this.textContent;
-    expressionString += buttonText;
-    display.textContent = expressionString;
+    display.textContent += buttonText;
     dropOpEventListener();
 }
 
 function digitButtonClicked() {
     let buttonText = this.textContent;
-    expressionString += buttonText;
-    display.textContent = expressionString;
+    display.textContent += buttonText;
     addOpEventListener();
 }
 
