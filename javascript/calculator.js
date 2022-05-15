@@ -151,7 +151,6 @@ let reduceExpression = function(...opIndexArrays) {
 }
 
 let equalClicked = false;
-let zeroClicked = false;
 let nonZeroDigitClicked = false;
 let dotClicked = false;
 
@@ -199,9 +198,9 @@ function opButtonClicked() {
     let buttonText = this.textContent;
     display.textContent += buttonText;
     nonZeroDigitClicked = false;
-    zeroClicked = false;
     dropOpEventListener();
     addDigitEventListener();
+    dot.removeEventListener("click", dotButtonClicked);
     dotClicked = false;
 }
 
@@ -220,8 +219,7 @@ function digitButtonClicked() {
         nonZeroDigitClicked = true;
     }
     else {
-        zeroClicked = true;
-        if (!nonZeroDigitClicked) {
+        if ((!nonZeroDigitClicked) && (!dotClicked)) {
             dropDigitEventListener();
         }
     }
