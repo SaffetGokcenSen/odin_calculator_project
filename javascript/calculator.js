@@ -151,6 +151,8 @@ let reduceExpression = function(...opIndexArrays) {
 }
 
 let equalClicked = false;
+let zeroClicked = false;
+let nonZeroDigitClicked = false;
 
 function dropOpEventListener() {
     division.removeEventListener("click", opButtonClicked);
@@ -169,12 +171,42 @@ function addOpEventListener() {
 function opButtonClicked() {
     let buttonText = this.textContent;
     display.textContent += buttonText;
+    nonZeroDigitClicked = false;
+    zeroClicked = false;
     dropOpEventListener();
+    six.addEventListener("click", digitButtonClicked);
+    seven.addEventListener("click", digitButtonClicked);
+    eight.addEventListener("click", digitButtonClicked);
+    nine.addEventListener("click", digitButtonClicked);
+    two.addEventListener("click", digitButtonClicked);
+    three.addEventListener("click", digitButtonClicked);
+    four.addEventListener("click", digitButtonClicked);
+    five.addEventListener("click", digitButtonClicked);
+    zero.addEventListener("click", digitButtonClicked);
+    one.addEventListener("click", digitButtonClicked);    
 }
 
 function digitButtonClicked() {
     let buttonText = this.textContent;
     display.textContent += buttonText;
+    if (buttonText !== "0") {
+        nonZeroDigitClicked = true;
+    }
+    else {
+        zeroClicked = true;
+        if (!nonZeroDigitClicked) {
+            six.removeEventListener("click", digitButtonClicked);
+            seven.removeEventListener("click", digitButtonClicked);
+            eight.removeEventListener("click", digitButtonClicked);
+            nine.removeEventListener("click", digitButtonClicked);
+            two.removeEventListener("click", digitButtonClicked);
+            three.removeEventListener("click", digitButtonClicked);
+            four.removeEventListener("click", digitButtonClicked);
+            five.removeEventListener("click", digitButtonClicked);
+            zero.removeEventListener("click", digitButtonClicked);
+            one.removeEventListener("click", digitButtonClicked);            
+        }
+    }
     addOpEventListener();
 }
 
