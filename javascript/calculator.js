@@ -200,7 +200,7 @@ function opButtonClicked() {
     nonZeroDigitClicked = false;
     zeroClicked = false;
     dropOpEventListener();
-    addDigitEventListener()
+    addDigitEventListener();
 }
 
 function digitButtonClicked() {
