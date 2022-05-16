@@ -261,8 +261,17 @@ function digitButtonClicked() {
     if (!dotClicked) dot.addEventListener("click", dotButtonClicked);
 }
 
+// called when the clear button is clicked
+function clearButtonClicked() {
+    // clear the calculator display
+    display.textContent = "";
+}
+
 // listen for the click of a digit
 addDigitEventListener();
+
+// listen for the click of the clear button
+clear.addEventListener("click", clearButtonClicked);
 
 // it is assumed that this is the character array form of the expression input 
 // by the user
