@@ -265,6 +265,19 @@ function digitButtonClicked() {
 function clearButtonClicked() {
     // clear the calculator display
     display.textContent = "";
+    // an operator cannot be clicked after a clear
+    dropOpEventListener();
+    // a decimal seoparator cannot be clicked after a clear
+    dot.removeEventListener("click", dotButtonClicked);
+    // reset the booleans to their initial states
+    nonZeroDigitClicked = false;
+    dotClicked = false;
+}
+
+// called when the backspace button is clicked
+function backspaceButtonClicked() {
+    let expression = display.textContent;
+    console.log(expression);
 }
 
 // listen for the click of a digit
@@ -272,6 +285,9 @@ addDigitEventListener();
 
 // listen for the click of the clear button
 clear.addEventListener("click", clearButtonClicked);
+
+// listen for the click of the backspace button
+backspace.addEventListener("click", backspaceButtonClicked);
 
 // it is assumed that this is the character array form of the expression input 
 // by the user
