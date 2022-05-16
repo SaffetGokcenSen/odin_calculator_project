@@ -151,9 +151,12 @@ let reduceExpression = function(...opIndexArrays) {
 }
 
 let equalClicked = false;
+// indicates if a nonzero digit has been clicked
 let nonZeroDigitClicked = false;
+// indicates if the decimal separator has been clicked
 let dotClicked = false;
 
+// removes the event listeners for the operation clicks
 function dropOpEventListener() {
     division.removeEventListener("click", opButtonClicked);
     multiplication.removeEventListener("click", opButtonClicked);
@@ -161,6 +164,7 @@ function dropOpEventListener() {
     addition.removeEventListener("click", opButtonClicked);
 }
 
+// adds the event listeners for the operation clicks
 function addOpEventListener() {
     division.addEventListener("click", opButtonClicked);
     multiplication.addEventListener("click", opButtonClicked);
@@ -168,6 +172,7 @@ function addOpEventListener() {
     addition.addEventListener("click", opButtonClicked);
 }
 
+// adds the event listeners for the digit clicks
 function addDigitEventListener() {
     six.addEventListener("click", digitButtonClicked);
     seven.addEventListener("click", digitButtonClicked);
@@ -181,6 +186,7 @@ function addDigitEventListener() {
     one.addEventListener("click", digitButtonClicked);
 }
 
+// removes the event listeners for the digit clicks
 function dropDigitEventListener() {
     six.removeEventListener("click", digitButtonClicked);
     seven.removeEventListener("click", digitButtonClicked);
@@ -194,39 +200,68 @@ function dropDigitEventListener() {
     one.removeEventListener("click", digitButtonClicked);            
 }
 
+// called when an operation button is clicked
 function opButtonClicked() {
+    // gets and stores the operation character
     let buttonText = this.textContent;
+    // shows the character in the calculator display 
     display.textContent += buttonText;
+    // indicates that no nonzero digit has been clicked since this operation 
+    // click
     nonZeroDigitClicked = false;
+    // once an operator is clicked, click of another operator is mathematically
+    // meaningless
     dropOpEventListener();
+    // once an operator is clicked, a digit click is expected
     addDigitEventListener();
+    // a possible  listener for the decimal separator from the previous operator
+    // click is removed
     dot.removeEventListener("click", dotButtonClicked);
+    // indicates that no decimal separator has been clicked since this operation
+    // click
     dotClicked = false;
 }
 
+// called when the decimal separator is clicked
 function dotButtonClicked() {
+    // shows the decimal separator in the calculator display
     display.textContent += ".";
+    // indicates that the decimal separator has been clicked
     dotClicked = true;
+    // another click on the decimal separator is matheematically senseless
     dot.removeEventListener("click", dotButtonClicked);
+    // an operation cannot follow a decimal point separator
     dropOpEventListener();
+    // if zero and decimal separator have been clicked, then a digit must be
+    // able to be clicked
     if (!nonZeroDigitClicked) addDigitEventListener();
 }
 
+// called when a digit is clicked
 function digitButtonClicked() {
+    // gets and stores the digit
     let buttonText = this.textContent;
+    // shows the digit in the calculator display 
     display.textContent += buttonText;
+    // record that a nonzero digit has been clicked
     if (buttonText !== "0") {
         nonZeroDigitClicked = true;
     }
+    // if zero has been clicked and no nonzero digit was clicked before and the
+    // decimal separator was not clicked, then another digit cannot be clicked 
     else {
         if ((!nonZeroDigitClicked) && (!dotClicked)) {
             dropDigitEventListener();
         }
     }
+    // after a digit is clicked, an operator can be clicked
     addOpEventListener();
+    // after a digit click, the decimal separator can be clicked if it has not 
+    // already been clicked
     if (!dotClicked) dot.addEventListener("click", dotButtonClicked);
 }
 
+// listen for the click of a digit
 addDigitEventListener();
 
 // it is assumed that this is the character array form of the expression input 
