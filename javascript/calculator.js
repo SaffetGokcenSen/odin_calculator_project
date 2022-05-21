@@ -308,6 +308,8 @@ function clearButtonClicked() {
     displayString = "";
     // clear the calculator display
     display.textContent = "";
+    // a digit can be clicked after a clear
+    addDigitEventListener
     // an operator cannot be clicked after a clear
     dropOpEventListener();
     // a decimal separator cannot be clicked after a clear
@@ -323,6 +325,33 @@ function clearButtonClicked() {
 
 // called when the backspace button is clicked
 function backspaceButtonClicked() {
+    // erase the last character in the string
+    displayString = displayString.slice(0, -1);
+    // erase the last character in the display
+    display.textContent = displayString;
+    // remove the last element of the stack
+    digitEventStack.pop();
+    //  add or remove the listener according to the previous state
+    if (digitEventStack[digitEventStack.length - 1] === "1") {
+        addDigitEventListener();
+    }
+    else {
+        dropDigitEventListener();
+    }
+    opEventStack.pop();
+    if (opEventStack[opEventStack.length - 1] === "1") {
+        addOpEventListener();
+    }
+    else {
+        dropOpEventListener();
+    }
+    dotEventStack.pop();
+    if (dotEventStack[dotEventStack.length - 1] === "1") {
+        dot.addEventListener("click", dotButtonClicked);
+    }
+    else {
+        dot.removeEventListener("click", dotButtonClicked);
+    }
 }
 
 // listen for the click of a digit
