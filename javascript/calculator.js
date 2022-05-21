@@ -41,7 +41,7 @@ let getResult = function(operator, firstOperand, secondOperand) {
 // precedence the operations are to be performed.
 // reduceExpression(div, cross, minus, plus) evaluates an expression according
 // to the correct precedence.
-let reduceExpression = function(...opIndexArrays) {
+let reduceExpression = function(expression, ...opIndexArrays) {
     let opIndex, concatIndex, concatArrLength, firstOperand, secondOperand;
     let previousOpIndex, nextOpIndex;
     let result, operator;
@@ -155,6 +155,14 @@ let equalClicked = false;
 let nonZeroDigitClicked = false;
 // indicates if the decimal separator has been clicked
 let dotClicked = false;
+// the string representing the calculator display
+let displayString = ""; 
+// stack for the operator event history
+let opEventStack = ['0'];
+// stack for the digit event history
+let digitEventStack = ['1'];
+// stack for the dot button event history
+let dotEventStack = ['0'];
 
 // removes the event listeners for the operation clicks
 function dropOpEventListener() {
@@ -204,6 +212,8 @@ function dropDigitEventListener() {
 function opButtonClicked() {
     // gets and stores the operation character
     let buttonText = this.textContent;
+    // the expression in the caculator display is stored
+    displayString += buttonText;
     // shows the character in the calculator display 
     display.textContent += buttonText;
     // indicates that no nonzero digit has been clicked since this operation 
@@ -212,72 +222,107 @@ function opButtonClicked() {
     // once an operator is clicked, click of another operator is mathematically
     // meaningless
     dropOpEventListener();
+    opEventStack.push("0");
     // once an operator is clicked, a digit click is expected
     addDigitEventListener();
+    digitEventStack.push("1");
     // a possible  listener for the decimal separator from the previous operator
     // click is removed
     dot.removeEventListener("click", dotButtonClicked);
     // indicates that no decimal separator has been clicked since this operation
     // click
     dotClicked = false;
+    dotEventStack.push("0");
 }
 
 // called when the decimal separator is clicked
 function dotButtonClicked() {
+    // the expression in the caculator display is stored
+    displayString += ".";
     // shows the decimal separator in the calculator display
     display.textContent += ".";
     // indicates that the decimal separator has been clicked
     dotClicked = true;
-    // another click on the decimal separator is matheematically senseless
+    // another click on the decimal separator is mathematically senseless
     dot.removeEventListener("click", dotButtonClicked);
+    dotEventStack.push("0");
     // an operation cannot follow a decimal point separator
     dropOpEventListener();
+    opEventStack.push("0");
     // if zero and decimal separator have been clicked, then a digit must be
     // able to be clicked
-    if (!nonZeroDigitClicked) addDigitEventListener();
+    if (!nonZeroDigitClicked) {
+        addDigitEventListener();
+    }
+    digitEventStack.push("1");
 }
 
 // called when a digit is clicked
 function digitButtonClicked() {
     // gets and stores the digit
     let buttonText = this.textContent;
+    // the expression in the calculator display is stored
+    displayString += buttonText;
     // shows the digit in the calculator display 
     display.textContent += buttonText;
-    // record that a nonzero digit has been clicked
-    if (buttonText !== "0") {
+    if (buttonText !== "0") { // a nonzero digit click is recorded
         nonZeroDigitClicked = true;
+        digitEventStack.push("1");
+        // if the decimal separator has not been clicked, it can be clicked.
+        if (!dotClicked) {
+            dot.addEventListener("click", dotButtonClicked);
+            dotEventStack.push("1");
+        }
+        else {
+            dotEventStack.push("0");
+        }
     }
-    // if zero has been clicked and no nonzero digit was clicked before and the
-    // decimal separator was not clicked, then another digit cannot be clicked 
     else {
-        if ((!nonZeroDigitClicked) && (!dotClicked)) {
-            dropDigitEventListener();
+        if (!dotClicked) {
+            dot.addEventListener("click", dotButtonClicked);
+            dotEventStack.push("1");
+            // if zero was clicked and no nonzero digit was clicked before and
+            // the decimal separator was not clicked, then another digit cannot
+            // be clicked
+            if (!nonZeroDigitClicked) {
+                dropDigitEventListener();
+                digitEventStack.push("0");
+            }
+            else {
+                digitEventStack.push("1");
+            }
+        }
+        else {
+            dotEventStack.push("0");
+            digitEventStack.push("1");
         }
     }
     // after a digit is clicked, an operator can be clicked
     addOpEventListener();
-    // after a digit click, the decimal separator can be clicked if it has not 
-    // already been clicked
-    if (!dotClicked) dot.addEventListener("click", dotButtonClicked);
+    opEventStack.push("1");
 }
 
 // called when the clear button is clicked
 function clearButtonClicked() {
+    // the expression in the calculator display is stored
+    displayString = "";
     // clear the calculator display
     display.textContent = "";
     // an operator cannot be clicked after a clear
     dropOpEventListener();
-    // a decimal seoparator cannot be clicked after a clear
+    // a decimal separator cannot be clicked after a clear
     dot.removeEventListener("click", dotButtonClicked);
     // reset the booleans to their initial states
     nonZeroDigitClicked = false;
     dotClicked = false;
+    // empty the event history stacks
+    opEventStack = ['0'];
+    digitEventStack = ['1'];
+    dotEventStack = ['0'];
 }
 
 // called when the backspace button is clicked
 function backspaceButtonClicked() {
-    let expression = display.textContent;
-    console.log(expression);
 }
 
 // listen for the click of a digit
