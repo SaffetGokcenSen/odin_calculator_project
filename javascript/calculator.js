@@ -309,7 +309,7 @@ function clearButtonClicked() {
     // clear the calculator display
     display.textContent = "";
     // a digit can be clicked after a clear
-    addDigitEventListener
+    addDigitEventListener();
     // an operator cannot be clicked after a clear
     dropOpEventListener();
     // a decimal separator cannot be clicked after a clear
