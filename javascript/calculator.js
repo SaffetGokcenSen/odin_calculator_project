@@ -223,6 +223,7 @@ function opButtonClicked() {
     // indicates that no nonzero digit has been clicked since this operation 
     // click
     nonZeroDigitClicked = false;
+    nonZeroDigitClickStack.push(false);
     // once an operator is clicked, click of another operator is mathematically
     // meaningless
     dropOpEventListener();
@@ -236,6 +237,7 @@ function opButtonClicked() {
     // indicates that no decimal separator has been clicked since this operation
     // click
     dotClicked = false;
+    dotClickStack.push(false);
     dotEventStack.push("0");
 }
 
@@ -247,6 +249,7 @@ function dotButtonClicked() {
     display.textContent += ".";
     // indicates that the decimal separator has been clicked
     dotClicked = true;
+    dotClickStack.push(true);
     // another click on the decimal separator is mathematically senseless
     dot.removeEventListener("click", dotButtonClicked);
     dotEventStack.push("0");
@@ -257,6 +260,10 @@ function dotButtonClicked() {
     // able to be clicked
     if (!nonZeroDigitClicked) {
         addDigitEventListener();
+        nonZeroDigitClickStack.push(false);
+    }
+    else {
+        nonZeroDigitClickStack.push(true);
     }
     digitEventStack.push("1");
 }
@@ -272,19 +279,23 @@ function digitButtonClicked() {
     if (buttonText !== "0") { // a nonzero digit click is recorded
         nonZeroDigitClicked = true;
         digitEventStack.push("1");
+        nonZeroDigitClickStack.push(true);
         // if the decimal separator has not been clicked, it can be clicked.
         if (!dotClicked) {
             dot.addEventListener("click", dotButtonClicked);
             dotEventStack.push("1");
+            dotClickStack.push(false);
         }
         else {
             dotEventStack.push("0");
+            dotClickStack.push(true);
         }
     }
     else {
         if (!dotClicked) {
             dot.addEventListener("click", dotButtonClicked);
             dotEventStack.push("1");
+            dotClickStack.push(false);
             // if zero was clicked and no nonzero digit was clicked before and
             // the decimal separator was not clicked, then another digit cannot
             // be clicked
@@ -299,6 +310,7 @@ function digitButtonClicked() {
         else {
             dotEventStack.push("0");
             digitEventStack.push("1");
+            dotClickStack.push(true);
         }
     }
     // after a digit is clicked, an operator can be clicked
@@ -357,6 +369,20 @@ function backspaceButtonClicked() {
     }
     else {
         dot.removeEventListener("click", dotButtonClicked);
+    }
+    dotClickStack.pop();
+    if (dotClickStack[dotClickStack.length - 1]) {
+        dotClicked = true;
+    }
+    else {
+        dotClicked = false;
+    }
+    nonZeroDigitClickStack.pop();
+    if (nonZeroDigitClickStack[nonZeroDigitClickStack.lnegth - 1]) {
+        nonZeroDigitClicked = true;
+    }
+    else {
+        nonZeroDigitClicked = false;
     }
 }
 
