@@ -216,9 +216,9 @@ function dropDigitEventListener() {
 function opButtonClicked() {
     // gets and stores the operation character
     let buttonText = this.textContent;
-    // the expression in the caculator display is stored
+    // the expression in the calculator display is stored
     displayString += buttonText;
-    // shows the character in the calculator display 
+    // adds the character to the calculator display 
     display.textContent += buttonText;
     // indicates that no nonzero digit has been clicked since this operation 
     // click
@@ -239,13 +239,15 @@ function opButtonClicked() {
     dotClicked = false;
     dotClickStack.push(false);
     dotEventStack.push("0");
+    // after an operator sign, equals sign cannot be clicked
+    equals.removeEventListener("click", equalsButtonClicked);
 }
 
 // called when the decimal separator is clicked
 function dotButtonClicked() {
     // the expression in the caculator display is stored
     displayString += ".";
-    // shows the decimal separator in the calculator display
+    // adds the decimal separator to the calculator display
     display.textContent += ".";
     // indicates that the decimal separator has been clicked
     dotClicked = true;
@@ -266,6 +268,8 @@ function dotButtonClicked() {
         nonZeroDigitClickStack.push(true);
     }
     digitEventStack.push("1");
+    // after the decimal separator is clicked, equals cannot be pressed
+    equals.removeEventListener("click", equalsButtonClicked);
 }
 
 // called when a digit is clicked
@@ -274,7 +278,7 @@ function digitButtonClicked() {
     let buttonText = this.textContent;
     // the expression in the calculator display is stored
     displayString += buttonText;
-    // shows the digit in the calculator display 
+    // adds the digit to the calculator display 
     display.textContent += buttonText;
     if (buttonText !== "0") { // a nonzero digit click is recorded
         nonZeroDigitClicked = true;
@@ -316,6 +320,8 @@ function digitButtonClicked() {
     // after a digit is clicked, an operator can be clicked
     addOpEventListener();
     opEventStack.push("1");
+    // listen for an equal sign click
+    equals.addEventListener("click", equalsButtonClicked);
 }
 
 // called when the clear button is clicked
@@ -339,6 +345,8 @@ function clearButtonClicked() {
     opEventStack = ['0'];
     digitEventStack = ['1'];
     dotEventStack = ['0'];
+    // after the clear button is clicked, equals sign cannot be pressed
+    equals.removeEventListener("click", equalsButtonClicked);
 }
 
 // called when the backspace button is clicked
@@ -386,6 +394,23 @@ function backspaceButtonClicked() {
     }
 }
 
+// operator index arrays initialized to empty arrays 
+let div = [], cross = [], plus = [], minus = [];
+
+// the expression entered by the user
+let expression = [];
+
+function equalsButtonClicked() {
+    // adds the equal sign to the calculator display 
+    display.textContent += "=";
+    // only the clear button can be pressed after clicking the equals sign
+    dropDigitEventListener();
+    dropOpEventListener();
+    backspace.removeEventListener("click", backspaceButtonClicked);
+    dot.removeEventListener("click", dotButtonClicked);
+    equals.removeEventListener("click", equalsButtonClicked);
+}
+
 // listen for the click of a digit
 addDigitEventListener();
 
@@ -398,11 +423,6 @@ backspace.addEventListener("click", backspaceButtonClicked);
 // it is assumed that this is the character array form of the expression input 
 // by the user
 // let expression = ['144', '/', '3', '+', '7', '*', '4', '-', '6'];
-
-// operator index arrays initialized to empty arrays 
-let div = [], cross = [], plus = [], minus = [];
-
-expression = [];
 
 // the array indices of each operator are extracted from the expression array
 expression.forEach((element, index) => {
