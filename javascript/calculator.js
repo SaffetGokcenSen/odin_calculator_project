@@ -163,6 +163,10 @@ let opEventStack = ['0'];
 let digitEventStack = ['1'];
 // stack for the dot button event history
 let dotEventStack = ['0'];
+// stack for the nonzero digit click boolean
+let nonZeroDigitClickStack = [false];
+// stack for dot click boolean
+let dotClickStack = [false];
 
 // removes the event listeners for the operation clicks
 function dropOpEventListener() {
@@ -316,7 +320,9 @@ function clearButtonClicked() {
     dot.removeEventListener("click", dotButtonClicked);
     // reset the booleans to their initial states
     nonZeroDigitClicked = false;
+    nonZeroDigitClickStack = [false];
     dotClicked = false;
+    dotClickStack = [false];
     // empty the event history stacks
     opEventStack = ['0'];
     digitEventStack = ['1'];
