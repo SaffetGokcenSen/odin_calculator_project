@@ -41,14 +41,14 @@ let getResult = function(operator, firstOperand, secondOperand) {
 // precedence the operations are to be performed.
 // reduceExpression(div, cross, minus, plus) evaluates an expression according
 // to the correct precedence.
-let reduceExpression = function(expression, ...opIndexArrays) {
+let reduceExpression = function(expression, concatenationArray, ...opIndexArrays) {
     let opIndex, concatIndex, concatArrLength, firstOperand, secondOperand;
     let previousOpIndex, nextOpIndex;
     let result, operator;
     let expressionLength;
+    let firstOperandLength, secondOperandLength;
     // take all of the operations into consideration
     while (opIndexArrays.length) {
-        console.log(expression);
         // take all incidences of the current operation into consideration
         while (opIndexArrays[0].length) {
             // opIndex is the index of the operation in the expression array
@@ -65,13 +65,16 @@ let reduceExpression = function(expression, ...opIndexArrays) {
             // the case when the operation is the first in the expression
             if (concatIndex === 0) {
                 firstOperand = expression.slice(0, opIndex);
+                firstOperandLength = firstOperand.length;
+                firstOperand = firstOperand.join('');
                 // the case when there is only one operation
                 if (concatArrLength === 1) {
-                    secondOperand = expression.slice((opIndex+1), expressionLength);
+                    secondOperand = expression.slice((opIndex+1), 
+                    expressionLength).join('');
                     result = getResult(operator, firstOperand, secondOperand);
                     // remove the operation and its operands from the expression
                     expression.splice(0, expressionLength, result);
-                    // remove the operation from the operaitons array
+                    // remove the operation from the operations array
                     concatenationArray.splice(concatIndex, 1);
                 }
                 // the case when there are more than one operations
@@ -79,6 +82,8 @@ let reduceExpression = function(expression, ...opIndexArrays) {
                     // the index of the next operator
                     nextOpIndex = concatenationArray[1];
                     secondOperand = expression.slice((opIndex+1), nextOpIndex);
+                    secondOperandLength = secondOperand.length;
+                    secondOperand = secondOperand.join('');
                     result = getResult(operator, firstOperand, secondOperand);
                     expression.splice(0, nextOpIndex, result);
                     concatenationArray.splice(concatIndex, 1);
@@ -86,13 +91,15 @@ let reduceExpression = function(expression, ...opIndexArrays) {
                     // removal of the current operator
                     opIndexArrays.forEach((element) => {
                         element.forEach((element, index, array) => {
-                            array[index] = element - 2;
+                            array[index] = element - 
+                            (firstOperandLength + secondOperandLength);
                         })
                     });
                     // update of the indices due to the removal of the current
                     // operator
                     concatenationArray.forEach((element, index, array) => {
-                        array[index] = element - 2;
+                        array[index] = element - 
+                        (firstOperandLength + secondOperandLength);
                     });
                     concatenationArray.sort(function(a, b) {
                         return a - b;
@@ -103,8 +110,10 @@ let reduceExpression = function(expression, ...opIndexArrays) {
             else if (concatIndex === (concatArrLength - 1)) {
                 // the index of the previous operator
                 previousOpIndex = concatenationArray[concatIndex - 1];
-                firstOperand = expression.slice(previousOpIndex + 1, opIndex);
-                secondOperand = expression.slice(opIndex + 1, expressionLength);
+                firstOperand = 
+                expression.slice(previousOpIndex + 1, opIndex).join('');
+                secondOperand = 
+                expression.slice(opIndex + 1, expressionLength).join('');
                 result = getResult(operator, firstOperand, secondOperand);
                 expression.splice((previousOpIndex+1), 
                 (expressionLength-(previousOpIndex+1)), result);
@@ -118,8 +127,12 @@ let reduceExpression = function(expression, ...opIndexArrays) {
             else {
                 previousOpIndex = concatenationArray[concatIndex - 1];
                 firstOperand = expression.slice(previousOpIndex + 1, opIndex);
+                firstOperandLength = firstOperand.length;
+                firstOperand = firstOperand.join('');
                 nextOpIndex = concatenationArray[concatIndex + 1];
                 secondOperand = expression.slice((opIndex + 1), nextOpIndex);
+                secondOperandLength = secondOperand.length;
+                secondOperand = secondOperand.join('');
                 result = getResult(operator, firstOperand, secondOperand);
                 expression.splice((previousOpIndex + 1), 
                 (nextOpIndex - (previousOpIndex + 1)), result);
@@ -127,19 +140,20 @@ let reduceExpression = function(expression, ...opIndexArrays) {
                 opIndexArrays.forEach((element) => {
                     element.forEach((element, index, array) => {
                         if (element >= nextOpIndex) {
-                            array[index] = element - 2;
+                            array[index] = element - 
+                            (firstOperandLength + secondOperandLength);
                         }
                     })
                 });
                 concatenationArray.forEach((element, index, array) => {
                     if (element >= nextOpIndex) {
-                        array[index] = element - 2;
+                        array[index] = element - 
+                        (firstOperandLength + secondOperandLength);
                     }
                 });
                 concatenationArray.sort(function(a, b) {
                     return a - b;
                 });
-                console.log(expression);
             }
         }
         // all of the incidences of the first operation have been taken into
@@ -150,7 +164,6 @@ let reduceExpression = function(expression, ...opIndexArrays) {
     return expression[0];
 }
 
-let equalClicked = false;
 // indicates if a nonzero digit has been clicked
 let nonZeroDigitClicked = false;
 // indicates if the decimal separator has been clicked
@@ -280,6 +293,9 @@ function digitButtonClicked() {
     displayString += buttonText;
     // adds the digit to the calculator display 
     display.textContent += buttonText;
+    // listen for the click of the backspace button
+    backspace.addEventListener("click", backspaceButtonClicked);
+    
     if (buttonText !== "0") { // a nonzero digit click is recorded
         nonZeroDigitClicked = true;
         digitEventStack.push("1");
@@ -394,12 +410,6 @@ function backspaceButtonClicked() {
     }
 }
 
-// operator index arrays initialized to empty arrays 
-let div = [], cross = [], plus = [], minus = [];
-
-// the expression entered by the user
-let expression = [];
-
 function equalsButtonClicked() {
     // adds the equal sign to the calculator display 
     display.textContent += "=";
@@ -409,6 +419,41 @@ function equalsButtonClicked() {
     backspace.removeEventListener("click", backspaceButtonClicked);
     dot.removeEventListener("click", dotButtonClicked);
     equals.removeEventListener("click", equalsButtonClicked);
+    // the mathematical expression entered by the user is converted to an array
+    // of digits, operators and signs
+    let expression = displayString.split("");
+    // operator index arrays initialized to empty arrays 
+    let div = [];
+    let cross = [];
+    let plus = [];
+    let minus = [];
+    // the array indices of each operator are extracted from the expression array
+    expression.forEach((element, index) => {
+        if (element === '/') {
+            div.push(index);
+        }
+        else if (element === '*') {
+            cross.push(index);
+        }
+        else if (element === '+') {
+            plus.push(index);
+        }
+        else if (element === '-') {
+            minus.push(index);
+        }
+    })
+
+    // operator indices are collected in a single array
+    let concatenationArray = div.concat(cross, plus, minus);
+    // operator indices are sorted in an ascending order
+    concatenationArray.sort(function(a, b) {
+        return a - b;
+    });
+    // calculate the result of the expression
+    let calc_result = 
+    reduceExpression(expression, concatenationArray, div, cross, minus, plus);
+    // display the result of the expression
+    display.textContent += calc_result;
 }
 
 // listen for the click of a digit
@@ -417,36 +462,6 @@ addDigitEventListener();
 // listen for the click of the clear button
 clear.addEventListener("click", clearButtonClicked);
 
-// listen for the click of the backspace button
-backspace.addEventListener("click", backspaceButtonClicked);
-
-// it is assumed that this is the character array form of the expression input 
-// by the user
-// let expression = ['144', '/', '3', '+', '7', '*', '4', '-', '6'];
-
-// the array indices of each operator are extracted from the expression array
-expression.forEach((element, index) => {
-    if (element === '/') {
-        div.push(index);
-    }
-    else if (element === '*') {
-        cross.push(index);
-    }
-    else if (element === '+') {
-        plus.push(index);
-    }
-    else if (element === '-') {
-        minus.push(index);
-    }
-})
-
-// operator indices are collected in a single array
-let concatenationArray = div.concat(cross, plus, minus);
-// operator indices are sorted in an ascending order
-concatenationArray.sort(function(a, b) {
-    return a - b;
-});
-
-if ( equalClicked) {
-    let calc_result = reduceExpression(div, cross, minus, plus);
-}
+//3.1-6.1+8.4 HATA VERDİ!!!!
+//Ondalıklı sayıların olduğu birden fazla işlemin olduğu durumlarda opindex'leri
+//yanlış güncelliyor!!!!!
