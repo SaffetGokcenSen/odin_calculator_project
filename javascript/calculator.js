@@ -461,7 +461,3 @@ addDigitEventListener();
 
 // listen for the click of the clear button
 clear.addEventListener("click", clearButtonClicked);
-
-//3.1-6.1+8.4 HATA VERDİ!!!!
-//Ondalıklı sayıların olduğu birden fazla işlemin olduğu durumlarda opindex'leri
-//yanlış güncelliyor!!!!!
