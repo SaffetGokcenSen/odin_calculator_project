@@ -17,6 +17,7 @@ body {
     justify-content: center;
     border: 5px ridge yellowgreen;
     overflow-wrap: anywhere;
+    padding: 20px;
 }
 
 .keypad {
