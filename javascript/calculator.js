@@ -180,6 +180,8 @@ let dotEventStack = ['0'];
 let nonZeroDigitClickStack = [false];
 // stack for dot click boolean
 let dotClickStack = [false];
+// stack for equals button availability
+let equalsAvailableStack = [false];
 
 // removes the event listeners for the operation clicks
 function dropOpEventListener() {
@@ -254,6 +256,7 @@ function opButtonClicked() {
     dotEventStack.push("0");
     // after an operator sign, equals sign cannot be clicked
     equals.removeEventListener("click", equalsButtonClicked);
+    equalsAvailableStack.push(false);
 }
 
 // called when the decimal separator is clicked
@@ -283,6 +286,7 @@ function dotButtonClicked() {
     digitEventStack.push("1");
     // after the decimal separator is clicked, equals cannot be pressed
     equals.removeEventListener("click", equalsButtonClicked);
+    equalsAvailableStack.push(false);
 }
 
 // called when a digit is clicked
@@ -338,6 +342,7 @@ function digitButtonClicked() {
     opEventStack.push("1");
     // listen for an equal sign click
     equals.addEventListener("click", equalsButtonClicked);
+    equalsAvailableStack.push(true);
 }
 
 // called when the clear button is clicked
@@ -363,6 +368,7 @@ function clearButtonClicked() {
     dotEventStack = ['0'];
     // after the clear button is clicked, equals sign cannot be pressed
     equals.removeEventListener("click", equalsButtonClicked);
+    equalsAvailableStack = [false];
 }
 
 // called when the backspace button is clicked
@@ -402,11 +408,18 @@ function backspaceButtonClicked() {
         dotClicked = false;
     }
     nonZeroDigitClickStack.pop();
-    if (nonZeroDigitClickStack[nonZeroDigitClickStack.lnegth - 1]) {
+    if (nonZeroDigitClickStack[nonZeroDigitClickStack.length - 1]) {
         nonZeroDigitClicked = true;
     }
     else {
         nonZeroDigitClicked = false;
+    }
+    equalsAvailableStack.pop();
+    if (equalsAvailableStack[equalsAvailableStack.length - 1]) {
+        equals.addEventListener("click", equalsButtonClicked);
+    }
+    else {
+        equals.removeEventListener("click", equalsButtonClicked);
     }
 }
 
